@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Software Engineer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Portfolio</a>
+            <div class="nav-links">
+                <a href="about.html">About</a>
+                <a href="skills.html">Skills</a>
+                <a href="projects.html">Projects</a>
+                <a href="#contact" class="contact-link">Contact</a>
+            </div>
+            <button class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="profile-image">
+                    <img src="./images/profile-photo.jpg" alt="Profile Picture">
+                </div>
+                <h1 class="name">Mangesh Kailash Zate</h1>
+                <h2 class="main-title">Computer Engineer</h2>
+                <h3 class="subtitle">
+                    <span>Full Stack Developer</span>
+                    <span>Web Developer</span>
+                    <span>Problem Solver</span>
+                    <span>Tech Enthusiast</span>
+                </h3>
+                <p class="tagline">Crafting elegant solutions to complex problems with clean, efficient code.</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary contact-link">Get in Touch</a>
+                    <a href="projects.html" class="btn btn-outline">View Projects</a>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-content">
+                <form class="contact-form" action="https://formspree.io/f/xdkgnpbp" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Your message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Sending...
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <i class="fas fa-check-circle success-icon"></i>
+            <h3>Thank You!</h3>
+            <p>Your message has been sent successfully. I'll get back to you soon!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/mangeshzate/Digital-Portfolio-.git" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mangesh-zade-295b24335" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/mangya_013?igsh=MXE0MGRoMmwyYjU3eA==" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; 2024 Mangesh Kailash Zate. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for contact links
+        document.querySelectorAll('.contact-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const contactSection = document.querySelector('#contact');
+                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const contactPosition = contactSection.offsetTop - navHeight;
+                
+                window.scrollTo({
+                    top: contactPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Handle form submission
+        const form = document.querySelector('.contact-form');
+        const modal = document.querySelector('#successModal');
+        const closeModal = document.querySelector('.close-modal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            form.classList.add('loading');
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Show success modal
+                    modal.classList.add('show');
+                    form.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Sorry, there was an error sending your message. Please try again.');
+            } finally {
+                form.classList.remove('loading');
+            }
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+        // Add scroll reveal animations
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.stat-card, .skill-card, .project-card');
+            
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
